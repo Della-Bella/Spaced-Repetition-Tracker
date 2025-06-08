@@ -1,8 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="module" src="script.mjs"></script>
-  </head>
+    <script type="module" src="script.mjs" defer></script>
+    </head>
   <body>
-  </body>
+    <header>
+      <h1>Spaced Repetition Tracker</h1>
+    </header>
+        <!-- Section= 1 Drop-down -->
+        <section>
+          <label for="user-select">Choose a user:</label>
+          <select name="users" id="user-select">
+            <!-- JavaScript add the users here -->
+          </select>
+        </section>  
+        <hr>
+<!-- Section 2= Form to Add New Topics -->
+<section>
+  <h2>Add a New Topic to Revise</h2>
+  <form id="add-topic-form">
+    <div>
+      <label for="topic-name">Topic Name:</label>
+      <input type="text" id="topic-name" required>
+    </div>
+    <div>
+      <label for="start-date">Start Date:</label>
+      <input type="date" id="start-date" required>
+    </div>
+    <button type="submit">Add Topic</button>
+  </form>
+</section>
+
+<hr>
+
+<!-- Section 3= Agenda Display  -->
+<section>
+  <h2>Your Agenda</h2>
+  <div id="agenda-display">
+    <!-- The user's agenda will be displayed -->
+  </div>
+</section>
+</body>
 </html>
