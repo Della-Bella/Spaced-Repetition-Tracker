@@ -17,11 +17,11 @@ const users = getUserIds();
 //  DOM Element References
 console.log("window.onload: Getting DOM Element References.");
 //--  ELEMENTS REFERENCE -- //
-const userSelect = document.getElementById("user-select"); //dropdonw menu
+const userSelect = document.getElementById("user-select"); //drop-down menu
 
 //-- ELEMENTS FORM REFERENCE--//
 const addTopic = document.getElementById("add-topic");
-const topicTtitle = document.getElementById("topic-title");
+const topicTitle = document.getElementById("topic-title");
 const startDate = document.getElementById("start-date");
 const submitTask = document.getElementById("submit-task"); 
 
