@@ -85,7 +85,7 @@ function calculateRevisionDates (startDateString, topicName) {
   addRevision(threeMonths);
 
   const sixMonths = new Date(startDate);
-  sixMonths.setMonth(sixMonths.getMonth()+1);
+  sixMonths.setMonth(sixMonths.getMonth()+6);
   addRevision(sixMonths);
 
   const oneYear = new Date(startDate);
