@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <script type="module" src="script.mjs" defer></script>
-    </head>
+    <title>Spaced Repetition Tracker</title>
+  </head>
   <body>
     <header>
       <h1>Spaced Repetition Tracker</h1>
@@ -21,13 +22,13 @@
       <form id="add-topic">
         <div>
           <label for="topic-title">Topic Name:</label>
-          <input type="text" id="topic-title" required>
-        </div>
+          <input type="text" id="topic-title" size="30" placeholder="Enter Topic Here..." required>
+        </div><br>
         <div>
           <label for="start-date">Start Date:</label>
           <input type="date" id="start-date" required>
-        </div>
-        <button type="submit-task">Add Topic</button>
+        </div><br>
+        <button type="submit" id="submit-task">Add Topic</button><br>
       </form>
     </section>
 
