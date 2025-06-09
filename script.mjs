@@ -5,6 +5,7 @@
 // You can't open the index.html file using a file:// URL.
 
 import { getUserIds } from "./common.mjs";
+import { getData } from "./storage.mjs";
 
 // window.onload = function () {
 //   //  const users = getUserIds();
@@ -50,4 +51,70 @@ function populateUserDropdown() {
   }); 
   console.log("Dropdown done");
 }
+
+// Calculating revision dates
+
+function calculateRevisionDates (startDateString, topicName) {
+  const startDate = new Date (startDateString);
+  if (isNaN(startDate)) {
+    throw new Error ("Invalid Date Format");
+  };
+
+  const revisions = [];
+
+  const addRevision = (date) =>{
+    const yyyy = date.getFullYear();
+    const mm = String (date.getMonth()+1).padStart(2, '0');
+    const dd = String (date.getDate()).padStart(2, '0');
+    revisions.push({
+      topic: topicName;
+      revisionDate: `${yyyy}-${mm}-${dd}`
+    });
+  };
+
+  const oneWeek = new Date(startDate);
+  oneWeek.setDate(oneWeek.getDate()+7);
+  addRevision(oneWeek);
+
+  const oneMonth = new Date(startDate);
+  oneMonth.setMonth(oneMonth.getMonth()+1);
+  addRevision(oneMonth);
+
+  const threeMonths = new Date(startDate);
+  threeMonths.setMonth(threeMonths.getMonth()+3);
+  addRevision(threeMonths);
+
+  const sixMonths = new Date(startDate);
+  sixMonths.setMonth(sixMonths.getMonth()+1);
+  addRevision(sixMonths);
+
+  const oneYear = new Date(startDate);
+  oneYear.setFullYear(oneYear.getFullYear()+1);
+  addRevision(oneYear);
+
+  return revisions;
+};
+
+// Displaying Agendas for selected user
+
+userDropdown.addEventListener('change', (event) => {
+  const selectedUserID = event.target.value;
+  const agendaItems = getData(selectedUserID);
+
+  agendaContainer.innerHTML = "";
+
+  if (!agendaItems || agendaItems.length === 0) {
+    agendaContainer.textContent = "No agenda available for this user.";
+    return;
+  }
+
+  const ul = document.createElement('ul');
+  agendaItems.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.topic} - ${item.revisionDate}`;
+    ul.appendChild(li);
+  })
+  agendaContainer.appendChild(ul);
+})
+
 populateUserDropdown();
