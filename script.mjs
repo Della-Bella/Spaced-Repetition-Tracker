@@ -17,7 +17,7 @@ const users = getUserIds();
 //  DOM Element References
 console.log("window.onload: Getting DOM Element References.");
 //--  ELEMENTS REFERENCE -- //
-const userSelect = document.getElementById("userSelect"); //dropdonw menu
+const userSelect = document.getElementById("user-select"); //dropdonw menu
 
 //-- ELEMENTS FORM REFERENCE--//
 const addTopic = document.getElementById("add-topic");
@@ -34,12 +34,20 @@ console.log("Cosnts Reference Created");
 //-- Populates Dropdown menu--//
 
 function populateUserDropdown() {
+
+  // Add the default option that appears first
+  const defaultOption = document.createElement('option');
+  defaultOption.value = ""; 
+  defaultOption.textContent = "Select a user...";
+  defaultOption.selected = true; // Makes it the default selected item
+  userDropdown.appendChild(defaultOption);
+
   users.forEach(user => {
     const optionElement = document.createElement("option");
-    optionElement.value = user.id; 
-    optionElement.textContent = user.name; 
+    optionElement.value = user.id;
+    optionElement.textContent = user.name;
     userDropdown.appendChild(optionElement);
-  });
+  }); 
   console.log("Dropdown done");
 }
 populateUserDropdown();
