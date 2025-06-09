@@ -5,6 +5,7 @@
 // You can't open the index.html file using a file:// URL.
 
 import { getUserIds } from "./common.mjs";
+import { getData } from "./storage.mjs";
 
 // window.onload = function () {
 //   //  const users = getUserIds();
@@ -93,5 +94,27 @@ function calculateRevisionDates (startDateString, topicName) {
 
   return revisions;
 };
+
+// Displaying Agendas for selected user
+
+userDropdown.addEventListener('change', (event) => {
+  const selectedUserID = event.target.value;
+  const agendaItems = getData(selectedUserID);
+
+  agendaContainer.innerHTML = "";
+
+  if (!agendaItems || agendaItems.length === 0) {
+    agendaContainer.textContent = "No agenda available for this user.";
+    return;
+  }
+
+  const ul = document.createElement('ul');
+  agendaItems.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.topic} - ${item.revisionDate}`;
+    ul.appendChild(li);
+  })
+  agendaContainer.appendChild(ul);
+})
 
 populateUserDropdown();

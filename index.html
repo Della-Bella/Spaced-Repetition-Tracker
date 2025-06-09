@@ -1,44 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <script type="module" src="script.mjs" defer></script>
-    </head>
+
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Spaced Repetition Tracker</title>
+  </head>
   <body>
-    <header>
-      <h1>Spaced Repetition Tracker</h1>
-    </header>
-        <!-- Section= 1 Drop-down -->
-        <section>
-          <label for="user-select">Choose a user:</label>
-          <select name="users" id="user-select">
-            <!-- JavaScript add the users here -->
+    <header> <h1>Spaced Repetition Tracker</h1></header>
+    <main>
+      
+      <section>
+          <label for="select-users">Select a user:</label>
+          <select name="user-list" id="select-users" required>
+              <option value="" disabled selected>Select a user</option>
           </select>
-        </section>  
-        <hr>
-<!-- Section 2= Form to Add New Topics -->
-    <section>
-      <h2>Add a New Topic to Revise</h2>
-      <form id="add-topic">
-        <div>
-          <label for="topic-title">Topic Name:</label>
-          <input type="text" id="topic-title" required>
-        </div>
-        <div>
-          <label for="start-date">Start Date:</label>
-          <input type="date" id="start-date" required>
-        </div>
-        <button type="submit-task">Add Topic</button>
-      </form>
-    </section>
+      </section>
 
-    <hr>
 
-    <!-- Section 3= Agenda Display  -->
-    <section>
-      <h2>Your Agenda</h2>
-      <div id="agenda-container">
-        <!-- The user's agenda will be displayed -->
-      </div>
-    </section>
-  </body>
+      <section>
+          <h2>Add a new topic</h2>
+          <form action="#" id="add-topic">
+              <label for="topic-title">Topic title: </label>
+              <input type="text" id="topic-title" name="topic" placeholder="Enter a topic title" required /><br>
+              <label for="topic-date">Select a date: </label>
+              <input type="date" name="agenda-date" id="topic-date" required /><br>
+              <button type="submit" id="submit-btn">Submit topic</button><br>
+          </form>
+      </section>
+      <section id="agenda-container"></section>
+    </main>
+    <script type="module" src="script.mjs"></script>
+      </body>
 </html>
+
+   
