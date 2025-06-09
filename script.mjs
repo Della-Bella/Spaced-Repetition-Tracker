@@ -5,7 +5,7 @@
 // You can't open the index.html file using a file:// URL.
 
 import { getUserIds } from "./common.mjs";
-import { getData } from "./storage.mjs";
+import { getData, addData } from "./storage.mjs";
 
 // window.onload = function () {
 //   //  const users = getUserIds();
@@ -18,12 +18,12 @@ const users = getUserIds();
 //  DOM Element References
 console.log("window.onload: Getting DOM Element References.");
 //--  ELEMENTS REFERENCE -- //
-const userSelect = document.getElementById("user-select"); //dropdonw menu
+const userSelect = document.getElementById("user-select"); //drop-down menu
 
 //-- ELEMENTS FORM REFERENCE--//
 const addTopic = document.getElementById("add-topic");
-const topicTtitle = document.getElementById("topic-title");
-const startDate = document.getElementById("start-date");
+const topicTitleInput = document.getElementById("topic-title");
+const startDate = document.getElementById("topic-date");
 const submitTask = document.getElementById("submit-task"); 
 
 //--AREA DISPLAY REF--//
