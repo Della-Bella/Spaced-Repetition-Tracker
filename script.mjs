@@ -7,12 +7,29 @@
 import { getUserIds } from "./common.mjs";
 
 // window.onload = function () {
-//   // const users = getUserIds();
+//   //  const users = getUserIds();
 // //document.querySelector("body").innerText = `There are ${users.length} users`;
 // }
 
 const userDropdown = document.getElementById("user-select");
 const users = getUserIds(); 
+
+//  DOM Element References
+console.log("window.onload: Getting DOM Element References.");
+//--  ELEMENTS REFERENCE -- //
+const userSelect = document.getElementById("userSelect"); //dropdonw menu
+
+//-- ELEMENTS FORM REFERENCE--//
+const addTopic = document.getElementById("add-topic");
+const topicTtitle = document.getElementById("topic-title");
+const startDate = document.getElementById("start-date");
+const submitTask = document.getElementById("submit-task"); 
+
+//--AREA DISPLAY REF--//
+const agendaContainer = document.getElementById("agenda-container"); // Not used yet
+
+console.log("Cosnts Reference Created");
+
 
 //-- Populates Dropdown menu--//
 
