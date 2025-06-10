@@ -69,35 +69,37 @@ export function calculateRevisionDates (startDateString, topicName) {
 
   const revisions = [];
 
-  const addRevision = (date) =>{
+  
+  const addRevision = (date, intervalLabel) =>{ // add second argument for data labels
     const yyyy = date.getFullYear();
     const mm = String (date.getMonth()+1).padStart(2, '0');
     const dd = String (date.getDate()).padStart(2, '0');
     revisions.push({
       topic: topicName,
+      interval: intervalLabel, //nw propriety to store labels
       revisionDate: formatDateWithSuffix(date)
     });
   };
 
   const oneWeek = new Date(startDate);
   oneWeek.setDate(oneWeek.getDate()+7);
-  addRevision(oneWeek);
+  addRevision(oneWeek, "1 Week");
 
   const oneMonth = new Date(startDate);
   oneMonth.setMonth(oneMonth.getMonth()+1);
-  addRevision(oneMonth);
+  addRevision(oneMonth, "1 Month");
 
   const threeMonths = new Date(startDate);
   threeMonths.setMonth(threeMonths.getMonth()+3);
-  addRevision(threeMonths);
+  addRevision(threeMonths, "3 Months");
 
   const sixMonths = new Date(startDate);
   sixMonths.setMonth(sixMonths.getMonth()+6);
-  addRevision(sixMonths);
+  addRevision(sixMonths, "6 Months");
 
   const oneYear = new Date(startDate);
   oneYear.setFullYear(oneYear.getFullYear()+1);
-  addRevision(oneYear);
+  addRevision(oneYear, "1 Year");
 
   return revisions;
 };
@@ -149,7 +151,8 @@ export function displayUserAgenda(userId) {
   const ul = document.createElement('ul');
   agendaItems.forEach(item => {
     const li = document.createElement('li');
-    li.textContent = `${item.topic} - ${item.revisionDate}`;
+    // li.textContent = `${item.topic} - ${item.revisionDate}`;
+    li.textContent = `${item.topic} - (${item.revisionDate}) - ${item.interval}`;// add date labe in li
     ul.appendChild(li);
   });
   agendaContainer.appendChild(ul);
