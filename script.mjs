@@ -6,6 +6,8 @@
 
 import { getUserIds } from "./common.mjs";
 import { getData, addData } from "./storage.mjs";
+import { formatDateWithSuffix } from "./dateFormatting.js"; 
+
 
 // window.onload = function () {
 //   //  const users = getUserIds();
@@ -68,7 +70,7 @@ function calculateRevisionDates (startDateString, topicName) {
     const dd = String (date.getDate()).padStart(2, '0');
     revisions.push({
       topic: topicName,
-      revisionDate: `${yyyy}-${mm}-${dd}`
+      revisionDate: formatDateWithSuffix(date)
     });
   };
 
