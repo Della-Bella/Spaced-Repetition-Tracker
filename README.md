@@ -25,8 +25,8 @@ This project was a fantastic exercise in teamwork. We are proud of the seamless 
 
 **Project Contributors:**
 
-* Franklin D Kamela - [Link to GitHub Profile]
-* Eyuell21- [Link to GitHub Profile]
-* Della Bella- [Link to GitHub Profile]
+* Franklin D Kamela - https://github.com/Fradoka
+* Eyuell21- https://github.com/eyuell21
+* Della Bella- https://github.com/Della-Bella
 
 **A special thanks to our mentors and the Code Your Future community for their guidance and support.**
