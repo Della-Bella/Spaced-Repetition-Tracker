@@ -7,8 +7,7 @@
 import { getUserIds } from "./common.mjs";
 import { getData, addData } from "./storage.mjs";
 import { formatDateWithSuffix } from "./dateFormatting.js"; 
-
-
+import { renderAgendas } from "./renderAgendas.mjs";
 
 window.onload = function () {
   const dateInput = document.getElementById("topic-date");
@@ -27,10 +26,10 @@ console.log("window.onload: Getting DOM Element References.");
 const userSelect = document.getElementById("user-select"); //drop-down menu
 
 //-- ELEMENTS FORM REFERENCE--//
-const addTopic = document.getElementById("add-topic");
+const addTopicForm = document.getElementById("add-topic");
 const topicTitleInput = document.getElementById("topic-title");
-const startDate = document.getElementById("topic-date");
-const submitTask = document.getElementById("submit-task"); 
+const startDateInput = document.getElementById("topic-date");
+const submitTaskButton = document.getElementById("submit-task"); 
 
 //--AREA DISPLAY REF--//
 const agendaContainer = document.getElementById("agenda-container"); // Not used yet
@@ -105,29 +104,41 @@ function calculateRevisionDates (startDateString, topicName) {
 
 userDropdown.addEventListener('change', (event) => {
   const selectedUserID = event.target.value;
-  const agendaItems = getData(selectedUserID);
 
-  agendaContainer.innerHTML = "";
+  if (!selectedUserID) {
+    agendaContainer.innerHTML = "";
+  }
+  
+  renderAgendas(selectedUserID);
+});
 
-  if (!agendaItems || agendaItems.length === 0) {
-    agendaContainer.textContent = "No agenda available for this user.";
+// Submitting Form with new revision
+
+addTopicForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const selectedUserID = userDropdown.value;
+  const topicName = topicTitleInput.value;
+  const startDate = startDateInput.value;
+
+  if (!selectedUserID){
+    alert ("Please pick a user!");
     return;
   }
 
-  const today = new Date();
-  today.setHours(0,0,0,0);
+  if (!(topicName.trim()) || !startDate) {
+    alert("Please Enter both topic and start date!");
+    return;
+  }
 
-  const items = agendaItems
-    .filter(item => new Date(item.revisionDate) >= today)
-    .sort((a,b) => new Date(a.revisionDate) - new Date(b.revisionDate));
+  const newAgendaArray = calculateRevisionDates (startDate, topicName);
 
-  const ul = document.createElement('ul');
-  items.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = `${item.topic} - ${item.revisionDate}`;
-    ul.appendChild(li);
-  });
-  agendaContainer.appendChild(ul);
-})
+  addData (selectedUserID, newAgendaArray);
+
+  renderAgendas (selectedUserID);
+
+  topicTitleInput.value = "";
+});
+
 
 populateUserDropdown();
