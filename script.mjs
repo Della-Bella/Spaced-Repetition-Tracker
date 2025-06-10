@@ -9,10 +9,14 @@ import { getData, addData } from "./storage.mjs";
 import { formatDateWithSuffix } from "./dateFormatting.js"; 
 
 
-// window.onload = function () {
-//   //  const users = getUserIds();
-// //document.querySelector("body").innerText = `There are ${users.length} users`;
-// }
+
+window.onload = function () {
+  const dateInput = document.getElementById("topic-date");
+  const today = new Date(); // 2. Create a new Date object
+  const formattedDate = today.toISOString().split('T')[0];
+  dateInput.value = formattedDate;
+  console.log ("dateformating working");
+}
 
 const userDropdown = document.getElementById("select-users");
 const users = getUserIds(); 
