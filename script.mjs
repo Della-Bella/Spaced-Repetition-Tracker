@@ -7,6 +7,7 @@
 import { getUserIds } from "./common.mjs";
 import { getData, addData } from "./storage.mjs";
 import { formatDateWithSuffix } from "./dateFormatting.js"; 
+import { addTopics } from "./formSubmission.js";
 
 
 
@@ -18,7 +19,7 @@ window.onload = function () {
   console.log ("dateformating working");
 }
 
-const userDropdown = document.getElementById("select-users");
+export const userDropdown = document.getElementById("select-users");
 const users = getUserIds(); 
 
 //  DOM Element References
@@ -27,10 +28,10 @@ console.log("window.onload: Getting DOM Element References.");
 const userSelect = document.getElementById("user-select"); //drop-down menu
 
 //-- ELEMENTS FORM REFERENCE--//
-const addTopic = document.getElementById("add-topic");
-const topicTitleInput = document.getElementById("topic-title");
-const startDate = document.getElementById("topic-date");
-const submitTask = document.getElementById("submit-task"); 
+export const addTopic = document.getElementById("add-topic");
+export const topicTitleInput = document.getElementById("topic-title");
+export const startDate = document.getElementById("topic-date");
+export const submitTask = document.getElementById("submit-task");
 
 //--AREA DISPLAY REF--//
 const agendaContainer = document.getElementById("agenda-container"); // Not used yet
@@ -60,7 +61,7 @@ function populateUserDropdown() {
 
 // Calculating revision dates
 
-function calculateRevisionDates (startDateString, topicName) {
+export function calculateRevisionDates (startDateString, topicName) {
   const startDate = new Date (startDateString);
   if (isNaN(startDate)) {
     throw new Error ("Invalid Date Format");
@@ -101,13 +102,44 @@ function calculateRevisionDates (startDateString, topicName) {
   return revisions;
 };
 
+
+//REFRACTORING THE FUNCTION FOR A REUSABLE FUNCTION
 // Displaying Agendas for selected user
 
-userDropdown.addEventListener('change', (event) => {
-  const selectedUserID = event.target.value;
-  const agendaItems = getData(selectedUserID);
+// userDropdown.addEventListener('change', (event) => {
+//   const selectedUserID = event.target.value;
+//   const agendaItems = getData(selectedUserID);
 
-  agendaContainer.innerHTML = "";
+//   agendaContainer.innerHTML = "";
+
+//   if (!agendaItems || agendaItems.length === 0) {
+//     agendaContainer.textContent = "No agenda available for this user.";
+//     return;
+//   }
+
+//   const ul = document.createElement('ul');
+//   agendaItems.forEach(item => {
+//     const li = document.createElement('li');
+//     li.textContent = `${item.topic} - ${item.revisionDate}`;
+//     ul.appendChild(li);
+//   })
+//   agendaContainer.appendChild(ul);
+// })
+
+// --- NEW REUSABLE FUNCTION ---
+// display logic NOW HAS IT own function so we can call it from anywhere.
+
+export function displayUserAgenda(userId) {
+ 
+  const agendaContainer = document.getElementById("agenda-container");
+
+  agendaContainer.innerHTML = "";//clear display
+
+  if (!userId) {
+    return;    // If no user is selected, don't show anything.
+  }
+
+  const agendaItems = getData(userId);
 
   if (!agendaItems || agendaItems.length === 0) {
     agendaContainer.textContent = "No agenda available for this user.";
@@ -128,6 +160,13 @@ userDropdown.addEventListener('change', (event) => {
     ul.appendChild(li);
   });
   agendaContainer.appendChild(ul);
-})
+}
+
+//new event listienr calling the new function
+userDropdown.addEventListener('change', (event) => {
+  const selectedUserID = event.target.value;
+  displayUserAgenda(selectedUserID); // Just call the function
+});
 
 populateUserDropdown();
+addTopics();
