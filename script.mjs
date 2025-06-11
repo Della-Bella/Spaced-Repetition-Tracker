@@ -6,19 +6,19 @@
 
 import { getUserIds } from "./common.mjs";
 import { getData, addData } from "./storage.mjs";
-import { formatDateWithSuffix } from "./dateFormatting.js"; 
-import { renderAgendas } from "./renderAgendas.mjs";
+import { formatDateWithSuffix } from "./dateFormatting.js";
+import { addTopics } from "./formSubmission.js"; // Kept from main branch
 
 window.onload = function () {
   const dateInput = document.getElementById("topic-date");
-  const today = new Date(); // 2. Create a new Date object
+  const today = new Date();
   const formattedDate = today.toISOString().split('T')[0];
   dateInput.value = formattedDate;
-  console.log ("dateformating working");
-}
+  console.log("dateformating working");
+};
 
-const userDropdown = document.getElementById("select-users");
-const users = getUserIds(); 
+export const userDropdown = document.getElementById("select-users");
+const users = getUserIds();
 
 //  DOM Element References
 console.log("window.onload: Getting DOM Element References.");
@@ -26,24 +26,21 @@ console.log("window.onload: Getting DOM Element References.");
 const userSelect = document.getElementById("user-select"); //drop-down menu
 
 //-- ELEMENTS FORM REFERENCE--//
-const addTopicForm = document.getElementById("add-topic");
-const topicTitleInput = document.getElementById("topic-title");
-const startDateInput = document.getElementById("topic-date");
-const submitTaskButton = document.getElementById("submit-task"); 
+export const addTopic = document.getElementById("add-topic");
+export const topicTitleInput = document.getElementById("topic-title");
+export const startDate = document.getElementById("topic-date");
+export const submitTask = document.getElementById("submit-task");
 
 //--AREA DISPLAY REF--//
-const agendaContainer = document.getElementById("agenda-container"); // Not used yet
+const agendaContainer = document.getElementById("agenda-container");
 
-console.log("Cosnts Reference Created");
-
+console.log("Consts Reference Created");
 
 //-- Populates Dropdown menu--//
-
 function populateUserDropdown() {
-
   // Add the default option that appears first
   const defaultOption = document.createElement('option');
-  defaultOption.value = ""; 
+  defaultOption.value = "";
   defaultOption.textContent = "Select a user...";
   defaultOption.selected = true; // Makes it the default selected item
   userDropdown.appendChild(defaultOption);
@@ -53,92 +50,118 @@ function populateUserDropdown() {
     optionElement.value = user.id;
     optionElement.textContent = user.name;
     userDropdown.appendChild(optionElement);
-  }); 
+  });
   console.log("Dropdown done");
 }
 
 // Calculating revision dates
-
-function calculateRevisionDates (startDateString, topicName) {
-  const startDate = new Date (startDateString);
-  if (isNaN(startDate)) {
-    throw new Error ("Invalid Date Format");
-  };
+export function calculateRevisionDates(startDateString, topicName) {
+  const startDateObj = new Date(startDateString);
+  if (isNaN(startDateObj)) {
+    throw new Error("Invalid Date Format");
+  }
 
   const revisions = [];
 
-  const addRevision = (date) =>{
+  const addRevision = (date, intervalLabel) => {
     const yyyy = date.getFullYear();
-    const mm = String (date.getMonth()+1).padStart(2, '0');
-    const dd = String (date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
     revisions.push({
       topic: topicName,
+      interval: intervalLabel, // new propriety to store labels
       revisionDate: formatDateWithSuffix(date)
     });
   };
 
-  const oneWeek = new Date(startDate);
-  oneWeek.setDate(oneWeek.getDate()+7);
-  addRevision(oneWeek);
+  const oneWeek = new Date(startDateObj);
+  oneWeek.setDate(oneWeek.getDate() + 7);
+  addRevision(oneWeek, "1 Week");
 
-  const oneMonth = new Date(startDate);
-  oneMonth.setMonth(oneMonth.getMonth()+1);
-  addRevision(oneMonth);
+  const oneMonth = new Date(startDateObj);
+  oneMonth.setMonth(oneMonth.getMonth() + 1);
+  addRevision(oneMonth, "1 Month");
 
-  const threeMonths = new Date(startDate);
-  threeMonths.setMonth(threeMonths.getMonth()+3);
-  addRevision(threeMonths);
+  const threeMonths = new Date(startDateObj);
+  threeMonths.setMonth(threeMonths.getMonth() + 3);
+  addRevision(threeMonths, "3 Months");
 
-  const sixMonths = new Date(startDate);
-  sixMonths.setMonth(sixMonths.getMonth()+6);
-  addRevision(sixMonths);
+  const sixMonths = new Date(startDateObj);
+  sixMonths.setMonth(sixMonths.getMonth() + 6);
+  addRevision(sixMonths, "6 Months");
 
-  const oneYear = new Date(startDate);
-  oneYear.setFullYear(oneYear.getFullYear()+1);
-  addRevision(oneYear);
+  const oneYear = new Date(startDateObj);
+  oneYear.setFullYear(oneYear.getFullYear() + 1);
+  addRevision(oneYear, "1 Year");
 
   return revisions;
-};
+}
 
-// Displaying Agendas for selected user
+// --- NEW REUSABLE DISPLAY FUNCTION (from main branch) ---
+// This display logic now has its own function so we can call it from anywhere.
+export function displayUserAgenda(userId) {
+  agendaContainer.innerHTML = ""; //clear display
 
+  if (!userId) {
+    return; // If no user is selected, don't show anything.
+  }
+
+  const agendaItems = getData(userId);
+  if (!agendaItems) {
+    return; // No data for this user
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const items = agendaItems
+    .filter(item => new Date(item.revisionDate) >= today)
+    .sort((a, b) => new Date(a.revisionDate) - new Date(b.revisionDate));
+
+  const ul = document.createElement('ul');
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.topic} - (${item.revisionDate}) - ${item.interval}`;
+    ul.appendChild(li);
+  });
+  agendaContainer.appendChild(ul);
+}
+
+// New event listener calling the reusable display function (from main branch)
 userDropdown.addEventListener('change', (event) => {
   const selectedUserID = event.target.value;
-
-  if (!selectedUserID) {
-    agendaContainer.innerHTML = "";
-  }
-  
-  renderAgendas(selectedUserID);
+  displayUserAgenda(selectedUserID);
 });
 
-// Submitting Form with new revision
-
-addTopicForm.addEventListener('submit', (event) => {
+// Your form submission logic, updated to work with the new functions and variables
+addTopic.addEventListener('submit', (event) => {
   event.preventDefault();
 
   const selectedUserID = userDropdown.value;
   const topicName = topicTitleInput.value;
-  const startDate = startDateInput.value;
+  const topicStartDate = startDate.value;
 
-  if (!selectedUserID){
-    alert ("Please pick a user!");
+  if (!selectedUserID) {
+    alert("Please pick a user!");
     return;
   }
 
-  if (!(topicName.trim()) || !startDate) {
+  if (!(topicName.trim()) || !topicStartDate) {
     alert("Please Enter both topic and start date!");
     return;
   }
 
-  const newAgendaArray = calculateRevisionDates (startDate, topicName);
+  const newAgendaArray = calculateRevisionDates(topicStartDate, topicName);
 
-  addData (selectedUserID, newAgendaArray);
+  addData(selectedUserID, newAgendaArray);
 
-  renderAgendas (selectedUserID);
+  // Refresh the display using the new function
+  displayUserAgenda(selectedUserID);
 
+  // Clear the input for the next entry
   topicTitleInput.value = "";
 });
 
-
+// Initialize the page
 populateUserDropdown();
+addTopics();
