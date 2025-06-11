@@ -8,7 +8,10 @@ export function displayUserAgenda(userId) {
   if (!userId) return;
 
   const agendaItems = getData(userId);
-  if (!agendaItems) return;
+  if (!agendaItems) {
+    agendaContainer.textContent = "No upcoming revisions.";
+    return
+  }
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
