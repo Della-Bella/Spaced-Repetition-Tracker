@@ -7,7 +7,16 @@
 import { getUserIds } from "./common.mjs";
 import { getData, addData } from "./storage.mjs";
 import { formatDateWithSuffix } from "./dateFormatting.js";
-import { addTopics } from "./formSubmission.js"; // Kept from main branch
+
+
+// Dom references
+
+export const userDropdown = document.getElementById("select-users");
+export const addTopic = document.getElementById("add-topic");
+export const topicTitleInput = document.getElementById("topic-title");
+export const startDate = document.getElementById("topic-date");
+export const submitTask = document.getElementById("submit-task");
+const agendaContainer = document.getElementById("agenda-container");
 
 window.onload = function () {
   const dateInput = document.getElementById("topic-date");
@@ -15,24 +24,14 @@ window.onload = function () {
   const formattedDate = today.toISOString().split('T')[0];
   dateInput.value = formattedDate;
   console.log("dateformating working");
+
+  populateUserDropdown();
 };
 
-export const userDropdown = document.getElementById("select-users");
+
 const users = getUserIds();
 
-//  DOM Element References
-console.log("window.onload: Getting DOM Element References.");
-//--  ELEMENTS REFERENCE -- //
-const userSelect = document.getElementById("select-users"); //drop-down menu
 
-//-- ELEMENTS FORM REFERENCE--//
-export const addTopic = document.getElementById("add-topic");
-export const topicTitleInput = document.getElementById("topic-title");
-export const startDate = document.getElementById("topic-date");
-export const submitTask = document.getElementById("submit-task");
-
-//--AREA DISPLAY REF--//
-const agendaContainer = document.getElementById("agenda-container");
 
 console.log("Consts Reference Created");
 
@@ -70,7 +69,7 @@ export function calculateRevisionDates(startDateString, topicName) {
     revisions.push({
       topic: topicName,
       interval: intervalLabel, // new propriety to store labels
-      revisionDate: formatDateWithSuffix(date)
+      revisionDate: date.toISOString().split("T")[0] 
     });
   };
 
@@ -118,13 +117,16 @@ export function displayUserAgenda(userId) {
     .filter(item => new Date(item.revisionDate) >= today)
     .sort((a, b) => new Date(a.revisionDate) - new Date(b.revisionDate));
 
+  if (items.length === 0) {
+  agendaContainer.textContent = "No upcoming revisions.";
+  return;
+  }
+
   const ul = document.createElement('ul');
   items.forEach(item => {
     const li = document.createElement('li');
 
-    li.textContent = `${item.topic}  - ${item.revisionDate} - ${item.interval}`; // add date labe in li
-    
-
+    li.textContent = `${item.topic}  - ${formatDateWithSuffix(new Date(item.revisionDate))} - ${item.interval}`; // add date labe in li
     ul.appendChild(li);
   });
   agendaContainer.appendChild(ul);
@@ -166,5 +168,4 @@ addTopic.addEventListener('submit', (event) => {
 });
 
 // Initialize the page
-populateUserDropdown();
-addTopics();
+
