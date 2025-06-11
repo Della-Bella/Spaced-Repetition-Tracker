@@ -25,7 +25,7 @@ const users = getUserIds();
 //  DOM Element References
 console.log("window.onload: Getting DOM Element References.");
 //--  ELEMENTS REFERENCE -- //
-const userSelect = document.getElementById("user-select"); //drop-down menu
+const userSelect = document.getElementById("select-users"); //drop-down menu
 
 //-- ELEMENTS FORM REFERENCE--//
 export const addTopic = document.getElementById("add-topic");
@@ -151,8 +151,7 @@ export function displayUserAgenda(userId) {
   const ul = document.createElement('ul');
   agendaItems.forEach(item => {
     const li = document.createElement('li');
-    // li.textContent = `${item.topic} - ${item.revisionDate}`;
-    li.textContent = `${item.topic} - (${item.revisionDate}) - ${item.interval}`;// add date labe in li
+    li.textContent = `${item.topic}  - ${item.revisionDate} - ${item.interval}`; // add date labe in li
     ul.appendChild(li);
   });
   agendaContainer.appendChild(ul);
