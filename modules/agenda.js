@@ -26,12 +26,14 @@ export function displayUserAgenda(userId) {
   }
 
   const ul = document.createElement("ul");
+  const para = document.createElement('h3')
+  para.textContent = "The agenda for user 3 is shown, with the revision dates shown as follows:"
   items.forEach(item => {
     const li = document.createElement("li");
     const formattedDate = formatDateWithSuffix(new Date(item.revisionDate));
-    li.textContent = `${item.topic} - ${formattedDate}`;
+    li.textContent = `${item.topic}, ${formattedDate}`;
     ul.appendChild(li);
   });
-
+  agendaContainer.appendChild(para);
   agendaContainer.appendChild(ul);
 }
