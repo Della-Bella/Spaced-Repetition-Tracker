@@ -25,9 +25,9 @@ export function calculateRevisionDates(startDateString, topicName) {
   const intervals = isPastDate
     ? [
         { months: 1},
-        { months: 2},
-        { months: 5},
-        { months: 11}
+        { months: 3},
+        { months: 6},
+        { years: 1}
       ]
     : [
         { days: 7},
