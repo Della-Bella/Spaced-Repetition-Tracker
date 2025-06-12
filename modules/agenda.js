@@ -27,7 +27,7 @@ export function displayUserAgenda(userId) {
 
   const ul = document.createElement("ul");
   const para = document.createElement('h3')
-  para.textContent = "The agenda for user 3 is shown, with the revision dates shown as follows:"
+  para.textContent = "The agenda for this user is shown, with the revision dates shown as follows:"
   items.forEach(item => {
     const li = document.createElement("li");
     const formattedDate = formatDateWithSuffix(new Date(item.revisionDate));
