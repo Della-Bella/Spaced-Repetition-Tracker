@@ -4,7 +4,7 @@ import { formatDateWithSuffix } from "../dateFormatting.js";
 import assert from "node:assert";
 import test from "node:test";
 
-// Helper function inside the test to build the expected string dynamically
+
 function createExpectedString(date, expectedDayAndSuffix) {
     const month = date.toLocaleString('default', { month: 'long' });
     const year = date.getFullYear();
@@ -29,6 +29,6 @@ test.describe("formatDateWithSuffix()", () => {
         assert.strictEqual(formatDateWithSuffix(date2), expectedString);
     });
 
-    // ... you would continue this pattern for the other tests ...
+
 
 });
