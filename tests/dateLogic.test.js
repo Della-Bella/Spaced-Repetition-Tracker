@@ -1,41 +1,23 @@
-// modules/dateLogic.js
+import { calculateRevisionDates } from "../modules/dateLogic";
 
+describe("calculateRevisionDates", () => {
+  test("should return 5 future revision dates with correct format and topic", () => {
+    const topic = "algorithms";
 
+    // Use a date 1 day in the future
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 1);
+    const dateString = futureDate.toISOString().split("T")[0];
 
-export function calculateRevisionDates(startDateString, topicName) {
-    const startDate = new Date(startDateString);
-    if (isNaN(startDate)) {
-        throw new Error("Invalid Date Format");
-    }
+    const revisions = calculateRevisionDates(dateString, topic);
 
-    const revisions = [];
+    // Check length
+    expect(revisions.length).toBe(5);
 
-
-    const addRevision = (date) => {
-        revisions.push({
-            topic: topicName,
-            revisionDate: date.toISOString()
-        });
-    };
-
-  
-    const intervals = [
-        { days: 7 },
-        { months: 1 },
-        { months: 3 },
-        { months: 6 },
-        { years: 1 }
-    ];
-
-   
-    intervals.forEach(({ days, months, years }) => {
-        
-        const date = new Date(startDate);
-        if (days) date.setDate(date.getDate() + days);
-        if (months) date.setMonth(date.getMonth() + months);
-        if (years) date.setFullYear(date.getFullYear() + years);
-        addRevision(date);
+    // Check structure and format
+    revisions.forEach(revision => {
+      expect(revision.topic).toBe(topic);
+      expect(revision.revisionDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     });
-
-    return revisions;
-  }
+  });
+});
