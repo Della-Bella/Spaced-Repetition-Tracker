@@ -23,8 +23,10 @@ export function calculateRevisionDates(startDateString, topicName) {
   };
 
   // Define intervals based on past/future start date
+
   const intervals = 
     [
+
         { days: 7},
         { months: 1},
         { months: 3},
