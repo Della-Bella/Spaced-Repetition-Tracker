@@ -17,7 +17,7 @@ export function calculateRevisionDates(startDateString, topicName) {
       const dd = String(date.getDate()).padStart(2, 0);
       revisions.push({
         topic: topicName,
-        revisionDate: date.toISOString()
+        revisionDate: date.toISOString().split("T")[0]
       });
     }
   };
