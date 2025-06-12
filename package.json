@@ -1,0 +1,33 @@
+{
+  "name": "spaced-repetition-tracker",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "**Spaced Repetition Tracker**",
+  "main": "main.js",
+  "directories": {
+    "test": "jest"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Della-Bella/Spaced-Repetition-Tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Della-Bella/Spaced-Repetition-Tracker/issues"
+  },
+  "homepage": "https://github.com/Della-Bella/Spaced-Repetition-Tracker#readme",
+  "dependencies": {
+    "D": "^1.0.0",
+    "jest": "^30.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
+    "babel-jest": "^30.0.0"
+  }
+}
