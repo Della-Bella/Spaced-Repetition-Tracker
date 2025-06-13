@@ -1,5 +1,5 @@
 import { userDropdown } from "./domElements.js";
-import { getUserIds } from "./common.mjs";
+import { getUserIds } from "./common.js";
 
 export function populateUserDropdown() {
   const defaultOption = document.createElement("option");
